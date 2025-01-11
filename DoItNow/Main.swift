@@ -13,14 +13,17 @@ struct Main: View {
     var body: some View {
         ZStack {
             Color("Background")
+                .ignoresSafeArea()
             
             if isSplashActive {
                 Splash()
+                    .ignoresSafeArea()
             } else {
-                Tasks()
+                Overlay {
+                    Tasks()
+                }
             }
         }
-        .ignoresSafeArea()
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                 withAnimation {

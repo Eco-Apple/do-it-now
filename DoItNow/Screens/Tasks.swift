@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct Tasks: View {
+    @Environment(OverlayObservable.self) var overlayObservable
+    
+    @State var viewModel = ViewModel(dataService: .shared)
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -32,7 +36,8 @@ struct Tasks: View {
                     
                     VStack {
                         ForEach(0..<200) { _ in
-                            NavigationLink {
+                            Button {
+                                overlayObservable.present(this: .detail)
                             } label : {
                                 TasksItem()
                             }
@@ -49,14 +54,13 @@ struct Tasks: View {
                 ToolbarItem(placement: .topBarLeading) {
                     Image("toolbar-logo-3")
                         .padding(.leading, 5.73)
-//                        .padding(.bottom, 25)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        
+                        overlayObservable.present(this: .add)
                     } label : {
                         Image("plus-3")
-                            .padding(8)
+                            .padding(4.9)
                             .background {
                                 Color.white
                                     .cornerRadius(10)
@@ -67,13 +71,16 @@ struct Tasks: View {
                             }
                     }
                     .padding(.trailing, 5)
-//                    .padding(.bottom, 25)
                 }
             }
         }
+        .onAppear(perform: viewModel.onAppear)
     }
 }
 
 #Preview {
+    let overlayObsrvable = OverlayObservable()
+    
     Tasks()
+        .environment(overlayObsrvable)
 }
