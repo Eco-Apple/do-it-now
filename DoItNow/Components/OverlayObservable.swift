@@ -12,14 +12,20 @@ class OverlayObservable {
     
     private(set) var isPresented: Bool = false
     private(set) var type: OverlayType = .none
+    private(set) var callback: (Action) -> Void = { _ in }
     
     enum OverlayType {
         case none, add, detail
     }
     
-    func present(this type: OverlayType) {
+    enum Action {
+        case cancel, success(Any), failure(String)
+    }
+    
+    func present(this type: OverlayType, callback: @escaping (Action) -> Void) {
         self.isPresented = true
         self.type = type
+        self.callback = callback
     }
     
     func close() {

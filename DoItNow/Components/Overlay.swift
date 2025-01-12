@@ -49,7 +49,7 @@ struct Overlay<Content: View>: View {
                 }
                
                 if overlayObservable.type == .add {
-                    Add()
+                    Add(callback: overlayObservable.callback)
                 }
                 
                 if overlayObservable.type == .detail {

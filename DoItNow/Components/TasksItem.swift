@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TasksItem: View {
+    let task: Task
+    
     var body: some View {
         HStack(alignment: .top) {
             Image("uncheck")
@@ -15,19 +17,23 @@ struct TasksItem: View {
                     3
                 }
             VStack(alignment: .leading, spacing: 0) {
-                Text("Study computer science.")
+                Text(task.title)
                     .frame(height: 21)
                     .font(.custom("Manjari-Bold", size: 18))
-                Text("40 mins")
+                Text(task.timeStarted == nil ? "Not started" : "40 mins")
                     .frame(height: 16)
                     .foregroundStyle(.fontSecondary)
                     .font(.custom("Manjari-Bold", size: 14))
             }
+            
+            Spacer()
         }
         .frame(height: 36)
+        .frame(maxWidth: .infinity)
     }
+    
 }
 
 #Preview {
-    TasksItem()
+    TasksItem(task: .example)
 }

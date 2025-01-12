@@ -32,7 +32,7 @@ extension Detail {
                 tags: tags
             )
             
-            dataService.addTask(task)
+//            dataService.addTask(task, callback: { _ in })
         }
         
         func limitTitle<V>(oldValue: V, newValue: V) {

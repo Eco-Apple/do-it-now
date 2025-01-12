@@ -15,7 +15,7 @@ struct Tasks: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 0) {
+                LazyVStack(spacing: 0) {
                     HStack {
                         Text("Recents")
                             .foregroundStyle(.recents)
@@ -35,11 +35,10 @@ struct Tasks: View {
                     .padding(.trailing, 21)
                     
                     VStack {
-                        ForEach(0..<200) { _ in
+                        ForEach(viewModel.tasks) { task in
                             Button {
-                                overlayObservable.present(this: .detail)
                             } label : {
-                                TasksItem()
+                                TasksItem(task: task)
                             }
                             .buttonStyle(PlainButtonStyle())
                         }
@@ -47,6 +46,16 @@ struct Tasks: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.leading, 19)
                     .padding(.trailing, 21)
+                   
+                    if viewModel.isNextPage {
+                        ProgressView()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .foregroundColor(.black)
+                            .foregroundColor(.red)
+                            .onAppear {
+                                viewModel.loadNextPage()
+                            }
+                    }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -57,7 +66,7 @@ struct Tasks: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        overlayObservable.present(this: .add)
+                        viewModel.add(overlayObservable: overlayObservable)
                     } label : {
                         Image("plus-3")
                             .padding(4.9)
@@ -74,7 +83,6 @@ struct Tasks: View {
                 }
             }
         }
-        .onAppear(perform: viewModel.onAppear)
     }
 }
 

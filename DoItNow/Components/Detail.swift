@@ -122,6 +122,6 @@ struct Detail: View {
 #Preview {
     let overlayObservable = OverlayObservable()
     
-    Add()
+    Detail()
         .environment(overlayObservable)
 }

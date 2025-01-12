@@ -19,19 +19,28 @@ extension Add {
         let tagsLimit: Int = 36
         
         private let dataService: DataService
+        private(set) var callback: (OverlayObservable.Action) -> Void
         
-        init(dataService: DataService){
+        init(dataService: DataService, callback: @escaping (OverlayObservable.Action) -> Void){
             self.dataService = dataService
+            self.callback = callback
         }
         
-        func startTimer() {
+        func startTimer(overlayObservable: OverlayObservable) {
             let task = Task(
                 title: title,
                 desc: description,
                 tags: tags
             )
             
-            dataService.addTask(task)
+            let response = dataService.addTask(task)
+           
+            switch response {
+            case .success(let data):
+                callback(.success(data))
+                overlayObservable.close()
+            case .failure(let message): break
+            }
         }
         
         func limitTitle<V>(oldValue: V, newValue: V) {

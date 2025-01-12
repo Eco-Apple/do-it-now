@@ -12,6 +12,10 @@ class DataService {
     private let container: ModelContainer
     private let context: ModelContext
     
+    enum Response {
+        case success(Any), failure(String)
+    }
+    
     @MainActor
     static let shared = DataService()
     
@@ -21,11 +25,15 @@ class DataService {
         context = container.mainContext
     }
     
-    func getTasks() -> [Task] {
+    func getTasks(page: Int, size: Int) -> [Task] {
         do {
-            let tasks = try context.fetch(FetchDescriptor<Task>())
+            var descriptor = FetchDescriptor<Task>(sortBy: [SortDescriptor<Task>(\Task.createdDate, order: .reverse)])
             
-            debugPrint(tasks)
+            descriptor.fetchLimit = size
+            descriptor.fetchOffset = (page - 1) * size
+            
+            let tasks = try context.fetch(descriptor)
+            debugPrint(tasks.count)
             
             return tasks
         } catch {
@@ -33,16 +41,15 @@ class DataService {
         }
     }
     
-    func addTask(_ task: Task) {
+    func addTask(_ task: Task) -> Response {
         do {
             context.insert(task)
-            
             debugPrint(task)
-            
             try context.save()
+            
+            return .success(task)
         } catch {
-            fatalError(error.localizedDescription)
+            return .failure(error.localizedDescription)
         }
     }
-    
 }

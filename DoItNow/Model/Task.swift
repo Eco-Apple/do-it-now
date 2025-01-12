@@ -13,14 +13,21 @@ class Task: Identifiable {
     var title: String
     var desc: String
     var tags: String
-    var createdAdd: Date
-    var updatedAdd: Date
+    var timeStarted: Date?
+    
+    var createdDate: Date
+    var updatedDate: Date
     
     init(title: String, desc: String, tags: String) {
         self.title = title
         self.desc = desc
         self.tags = tags
-        self.createdAdd = .now
-        self.updatedAdd = .now
+        self.createdDate = .now
+        self.updatedDate = .now
     }
+}
+
+
+extension Task {
+    static var example = Task(title: "Example Task", desc: "This is an example task", tags: "example")
 }
