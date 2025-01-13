@@ -47,13 +47,16 @@ struct Overlay<Content: View>: View {
                     
                     Spacer()
                 }
-               
-                if overlayObservable.type == .add {
-                    Add(callback: overlayObservable.callback)
-                }
                 
-                if overlayObservable.type == .detail {
+                switch overlayObservable.type {
+                case .add:
+                    Add(callback: overlayObservable.callback)
+                case .detail:
                     Detail()
+                case .filter(let cgPoint):
+                    Sort(cgPoint: cgPoint, callback: overlayObservable.callback)
+                case .none:
+                    EmptyView()
                 }
             }
         }

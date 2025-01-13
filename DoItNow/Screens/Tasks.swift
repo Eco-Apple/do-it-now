@@ -7,6 +7,15 @@
 
 import SwiftUI
 
+struct ButtonPositionPreferenceKey: PreferenceKey {
+    static var defaultValue: CGPoint = .zero
+    
+    
+    static func reduce(value: inout CGPoint, nextValue: () -> CGPoint) {
+        value = nextValue()
+    }
+}
+
 struct Tasks: View {
     @Environment(OverlayObservable.self) var overlayObservable
     
@@ -24,10 +33,20 @@ struct Tasks: View {
                         Spacer()
                         
                         Button {
-                            
+                            viewModel.filter(overlayObservable: overlayObservable)
                         } label: {
                             Image(.filter)
+                                .background(
+                                    GeometryReader { proxy in
+                                        Color.clear
+                                            .preference(key: ButtonPositionPreferenceKey.self, value: proxy.frame(in: .global).origin)
+                                    }
+                                )
                         }
+                       
+                    }
+                    .onPreferenceChange(ButtonPositionPreferenceKey.self) { value in
+                        viewModel.filterButtonPosition = value
                     }
                     .padding(.top, 96)
                     .padding(.bottom, 7)
