@@ -80,14 +80,14 @@ struct Tasks: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Image("toolbar-logo-3")
+                    Image("toolbar-logo")
                         .padding(.leading, 5.73)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         viewModel.add(overlayObservable: overlayObservable)
                     } label : {
-                        Image("plus-3")
+                        Image("plus")
                             .padding(4.9)
                             .background {
                                 Color.white
