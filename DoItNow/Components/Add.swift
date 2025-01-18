@@ -70,11 +70,7 @@ struct Add: View {
                     }
                 }
                 
-                TextField("#Workout #Habits #MakeItWork", text: $viewModel.tags)
-                    .multilineTextAlignment(.trailing)
-                    .frame(height: 12)
-                    .padding(.trailing, 18)
-                    .padding(.top, 15.18)
+                Tags(text: $viewModel.tags, tagsLimit: viewModel.tagsLimit)
                 
                 HStack {
                     Spacer()
@@ -82,7 +78,6 @@ struct Add: View {
                     Text("\(viewModel.tags.count)/\(viewModel.tagsLimit)")
                         .frame(height: 14)
                         .font(.custom("Manjari-Bold", size: 12))
-                        .onChange(of: viewModel.tags, viewModel.limitTags)
                 }
                 .padding(.trailing, 20)
                 .padding(.top, 11)

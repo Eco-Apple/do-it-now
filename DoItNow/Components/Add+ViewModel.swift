@@ -54,12 +54,5 @@ extension Add {
                 description = String(description.prefix(descriptionLimit))
             }
         }
-        
-        func limitTags<V>(oldValue: V, newValue: V) {
-            if tags.count > tagsLimit {
-                tags = String(tags.prefix(tagsLimit))
-            }
-        }
-    }
-    
+   }
 }
