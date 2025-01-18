@@ -59,12 +59,10 @@ struct Tags: View {
                         let modifiedSentence = newValue.split(separator: " ")
                             .map { word in
                                 if word.starts(with: "#") {
-                                    // Capitalize the first letter after #
                                     let firstLetter = word.dropFirst().prefix(1).uppercased()
                                     let restOfWord = word.dropFirst(2)
                                     return "#\(firstLetter)\(restOfWord)"
                                 } else {
-                                    // Prepend # to words without it
                                     return "#\(word)"
                                 }
                             }
@@ -80,13 +78,10 @@ struct Tags: View {
                     if addedText.last == " " {
                         text = oldValue + addedText.replacingOccurrences(of: " ", with: " #")
                     } else {
-                        // Split the sentence into words and process each one
                         let modifiedSentence = newValue.split(separator: " ")
                             .map { word in
                                 if word.starts(with: "#") {
-                                    // Get the first letter after # and capitalize it
                                     let firstLetter = word.dropFirst().prefix(1).uppercased()
-                                    // Combine with the rest of the word
                                     let restOfWord = word.dropFirst(2)
                                     return "#\(firstLetter)\(restOfWord)"
                                 } else {
