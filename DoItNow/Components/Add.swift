@@ -85,8 +85,11 @@ struct Add: View {
                 HStack {
                     Spacer()
                     
-                    Button {
-                        viewModel.startTimer(overlayObservable: overlayObservable)
+                    NavigationLink {
+                        TimerScreen()
+//                            .onAppear {
+//                                viewModel.startTimer(overlayObservable: overlayObservable)
+//                            }
                     } label: {
                         HStack(alignment: .center, spacing: 0){
                             Text("Start")

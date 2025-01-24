@@ -18,6 +18,8 @@ extension Add {
         let descriptionLimit: Int = 300
         let tagsLimit: Int = 36
         
+        var isTimerScreenActive = false
+        
         private let dataService: DataService
         private(set) var callback: (OverlayObservable.Action) -> Void
         

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TimerScreen: View {
+    @Environment(\.dismiss) var dismiss
+    
     var body: some View {
         ZStack {
             Color("Background")
@@ -31,6 +33,7 @@ struct TimerScreen: View {
                         Spacer()
                         
                         Button {
+                            dismiss()
                         } label: {
                             HStack(alignment: .top, spacing: 0){
                                 Text("Done")
@@ -58,6 +61,7 @@ struct TimerScreen: View {
             }
         }
         .ignoresSafeArea()
+        .navigationBarBackButtonHidden()
     }
 }
 
