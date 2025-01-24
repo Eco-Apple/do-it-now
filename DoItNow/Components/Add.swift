@@ -87,6 +87,7 @@ struct Add: View {
                     
                     NavigationLink {
                         TimerScreen()
+                            .environment(overlayObservable)
 //                            .onAppear {
 //                                viewModel.startTimer(overlayObservable: overlayObservable)
 //                            }

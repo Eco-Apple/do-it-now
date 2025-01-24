@@ -9,6 +9,9 @@ import SwiftUI
 
 struct TimerScreen: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(OverlayObservable.self) var overlayObservable
+
+    private var viewModel = ViewModel()
     
     var body: some View {
         ZStack {
@@ -19,10 +22,13 @@ struct TimerScreen: View {
                     Image(.yoga)
                         .frame(width: 362, height: 362)
                         .padding(.top, 164)
-                    Text("00:20")
+                    
+                    Text(viewModel.formatTime())
                         .frame(width: 362, height: 70, alignment: .top)
                         .font(.custom("Manjari-Bold", size: 95))
                         .padding(.top, -2)
+                        .onReceive(viewModel.timer, perform: viewModel.onReceiveTimer)
+                    
                     Text("Run After work!")
                         .frame(width: 362, height: 19, alignment: .top)
                         .font(.custom("Manjari-Bold", size: 20))
@@ -33,7 +39,7 @@ struct TimerScreen: View {
                         Spacer()
                         
                         Button {
-                            dismiss()
+                            viewModel.done(dismiss: dismiss, overlayObservable: overlayObservable)
                         } label: {
                             HStack(alignment: .top, spacing: 0){
                                 Text("Done")
@@ -62,6 +68,7 @@ struct TimerScreen: View {
         }
         .ignoresSafeArea()
         .navigationBarBackButtonHidden()
+        .onAppear(perform: viewModel.onAppear)
     }
 }
 

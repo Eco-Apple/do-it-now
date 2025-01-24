@@ -15,7 +15,7 @@ class OverlayObservable {
     private(set) var callback: (Action) -> Void = { _ in }
     
     enum OverlayType {
-        case none, add, detail, filter(CGPoint)
+        case none, add, detail, filter(CGPoint), alert(AnyView)
     }
     
     enum Action {

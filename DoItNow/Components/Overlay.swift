@@ -55,6 +55,8 @@ struct Overlay<Content: View>: View {
                     Detail()
                 case .filter(let cgPoint):
                     Sort(cgPoint: cgPoint, callback: overlayObservable.callback)
+                case .alert(let view):
+                    AlertView(view: view)
                 case .none:
                     EmptyView()
                 }
