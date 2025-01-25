@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct Add: View {
+    @Environment(\.navigate) var navigate
     @Environment(OverlayObservable.self) var overlayObservable
     
     @State var viewModel: ViewModel
@@ -85,12 +86,10 @@ struct Add: View {
                 HStack {
                     Spacer()
                     
-                    NavigationLink {
-                        TimerScreen()
-                            .environment(overlayObservable)
-//                            .onAppear {
-//                                viewModel.startTimer(overlayObservable: overlayObservable)
-//                            }
+                    Button {
+                        overlayObservable.close()
+                        navigate(.add(.timer))
+//                        viewModel.startTimer(overlayObservable: overlayObservable)
                     } label: {
                         HStack(alignment: .center, spacing: 0){
                             Text("Start")

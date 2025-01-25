@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Overlay<Content: View>: View {
-    @State var overlayObservable = OverlayObservable()
+    @Environment(OverlayObservable.self) var overlayObservable
     
     var content: Content
     
@@ -62,7 +62,6 @@ struct Overlay<Content: View>: View {
                 }
             }
         }
-        .environment(overlayObservable)
     }
 }
 

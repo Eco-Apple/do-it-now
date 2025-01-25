@@ -22,8 +22,8 @@ extension TimerScreen {
             overlayObservable.present(this: .alert(AnyView(Text("Test")))) { _ in
                 
             }
-            timer.upstream.connect().cancel()
-            dismiss()
+//            timer.upstream.connect().cancel()
+//            dismiss()
         }
         
         func onReceiveTimer(_ value: Date) {
