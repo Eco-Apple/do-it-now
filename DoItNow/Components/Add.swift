@@ -9,12 +9,11 @@ import SwiftUI
 
 struct Add: View {
     @Environment(\.navigate) var navigate
-    @Environment(OverlayObservable.self) var overlayObservable
     
     @State var viewModel: ViewModel
     
-    init(callback: @escaping (OverlayObservable.Action) -> Void) {
-        _viewModel = State(initialValue: .init(dataService: .shared, callback: callback))
+    init(callback: @escaping (Task) -> Void) {
+        _viewModel = State(initialValue: .init(callback: callback))
     }
     
     var body: some View {
@@ -87,9 +86,7 @@ struct Add: View {
                     Spacer()
                     
                     Button {
-                        overlayObservable.close()
-                        navigate(.add(.timer))
-//                        viewModel.startTimer(overlayObservable: overlayObservable)
+                        viewModel.startTimer()
                     } label: {
                         HStack(alignment: .center, spacing: 0){
                             Text("Start")
@@ -121,10 +118,7 @@ struct Add: View {
 }
 
 #Preview {
-    let overlayObservable = OverlayObservable()
-    
     Add { _ in
         
     }
-    .environment(overlayObservable)
 }

@@ -17,7 +17,10 @@ extension Tasks {
         private var page: Int = 1
         private var size: Int = 50
         var isNextPage: Bool = true
-        var filterButtonPosition: CGPoint = .zero
+        var sortButtonPosition: CGPoint = .zero
+        
+        var isAddPresented = false
+        var isSortPresented = false
         
         init(dataService: DataService) {
             self.dataService = dataService
@@ -25,28 +28,26 @@ extension Tasks {
             tasks = dataService.getTasks(page: 1, size: 50)
         }
         
-        func filter(overlayObservable: OverlayObservable) {
-            overlayObservable.present(this: .filter(filterButtonPosition)) { action in
-                switch action {
-                case .success(let filter):
-                    self.reset()
-                    self.tasks = self.dataService.sortTasks(filter as! DataService.Sort, page: self.page, size: self.size)
-                case .failure(let message):
-                    fatalError(message)
-                case .cancel: break
-                }
-            }
+        func sortCallback(sort: DataService.Sort) {
+            reset()
+            tasks = dataService.sortTasks(sort, page: page, size: size)
+            isSortPresented = false
         }
         
-        func add(overlayObservable: OverlayObservable) {
-            overlayObservable.present(this: .add) { action in
-                switch action {
-                case .success(let data):
-                    self.tasks.insert(data as! Task, at: 0)
-                case .failure(let message):
-                    fatalError(message)
-                case .cancel: break
-                }
+        func sort() {
+            isSortPresented = true
+        }
+        
+        func addCallback(task: Task, navigate: NavigationAction) {
+            let response = dataService.addTask(task)
+            
+            switch response {
+            case .success(let data):
+                guard let task = data as? Task else { return }
+                tasks.insert(task, at: 0)
+                navigate(.add(.timer(task)))
+            case .failure(let message):
+                fatalError(message)
             }
         }
         
@@ -64,9 +65,9 @@ extension Tasks {
         }
         
         func reset() {
-            self.page = 1
-            self.size = 50
-            self.isNextPage = true
+            page = 1
+            size = 50
+            isNextPage = true
         }
     }
 }

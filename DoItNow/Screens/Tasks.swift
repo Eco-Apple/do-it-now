@@ -17,7 +17,7 @@ struct ButtonPositionPreferenceKey: PreferenceKey {
 }
 
 struct Tasks: View {
-    @Environment(OverlayObservable.self) var overlayObservable
+    @Environment(\.navigate) var navigate
     
     @State var viewModel = ViewModel(dataService: .shared)
     
@@ -32,7 +32,7 @@ struct Tasks: View {
                     Spacer()
                     
                     Button {
-                        viewModel.filter(overlayObservable: overlayObservable)
+                        viewModel.sort()
                     } label: {
                         Image(.filter)
                             .background(
@@ -45,7 +45,7 @@ struct Tasks: View {
                     
                 }
                 .onPreferenceChange(ButtonPositionPreferenceKey.self) { value in
-                    viewModel.filterButtonPosition = value
+                    viewModel.sortButtonPosition = value
                 }
                 .padding(.top, 96)
                 .padding(.bottom, 7)
@@ -84,7 +84,7 @@ struct Tasks: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    viewModel.add(overlayObservable: overlayObservable)
+                    viewModel.isAddPresented = true
                 } label : {
                     Image("plus")
                         .padding(4.9)
@@ -100,12 +100,17 @@ struct Tasks: View {
                 .padding(.trailing, 5)
             }
         }
+        .customAlert(isPresented: $viewModel.isAddPresented) {
+            Add { task in
+                viewModel.addCallback(task: task, navigate: navigate)
+            }
+        }
+        .customAlert(isPresented: $viewModel.isSortPresented) {
+            Sort(cgPoint: viewModel.sortButtonPosition, callback: viewModel.sortCallback)
+        }
     }
 }
 
 #Preview {
-    let overlayObsrvable = OverlayObservable()
-    
     Tasks()
-        .environment(overlayObsrvable)
 }

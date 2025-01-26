@@ -22,8 +22,8 @@ class NavigationRouter {
     @ViewBuilder
     private func handleAddRoutes(_ route: NavigationRoute.AddRoute) -> some View {
         switch route {
-        case .timer:
-            TimerScreen()
+        case .timer(let task):
+            TimerScreen(task: task)
         }
     }
 }

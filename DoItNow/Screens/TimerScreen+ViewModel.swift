@@ -11,19 +11,24 @@ extension TimerScreen {
     @Observable
     class ViewModel {
         var timeElapsed: Double = 0.0
-        
         let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+        
+        var isAlertPresented = false
+        
+        private(set) var task: Task
+        
+        init(task: Task) {
+            self.task = task
+        }
         
         func onAppear() {
             timeElapsed = 0.0
         }
         
-        func done(dismiss: DismissAction, overlayObservable: OverlayObservable) {
-            overlayObservable.present(this: .alert(AnyView(Text("Test")))) { _ in
-                
-            }
-//            timer.upstream.connect().cancel()
-//            dismiss()
+        func done(dismiss: DismissAction) {
+            isAlertPresented = false
+            timer.upstream.connect().cancel()
+            dismiss()
         }
         
         func onReceiveTimer(_ value: Date) {

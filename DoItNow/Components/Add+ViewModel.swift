@@ -20,29 +20,20 @@ extension Add {
         
         var isTimerScreenActive = false
         
-        private let dataService: DataService
-        private(set) var callback: (OverlayObservable.Action) -> Void
+        private(set) var callback: (Task) -> Void
         
-        init(dataService: DataService, callback: @escaping (OverlayObservable.Action) -> Void){
-            self.dataService = dataService
+        init(callback: @escaping (Task) -> Void){
             self.callback = callback
         }
         
-        func startTimer(overlayObservable: OverlayObservable) {
+        func startTimer() {
             let task = Task(
                 title: title,
                 desc: description,
                 tags: tags
             )
             
-            let response = dataService.addTask(task)
-           
-            switch response {
-            case .success(let data):
-                callback(.success(data))
-                overlayObservable.close()
-            case .failure(let message): break
-            }
+            callback(task)
         }
         
         func limitTitle<V>(oldValue: V, newValue: V) {

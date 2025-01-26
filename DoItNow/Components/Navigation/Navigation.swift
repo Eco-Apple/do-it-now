@@ -27,8 +27,8 @@ extension EnvironmentValues {
 }
 
 struct Navigation<Content: View>: View {
-    @Environment(NavigationManager.self) var navigationManager
-    
+    @State private var router = NavigationRouter()
+
     let content: Content
     
     init(@ViewBuilder content: () -> Content) {
@@ -36,13 +36,15 @@ struct Navigation<Content: View>: View {
     }
     
     var body: some View {
-        @Bindable var navigationManager = navigationManager
-        
-        NavigationStack(path: $navigationManager.router.path) {
+        NavigationStack(path: $router.path) {
             content
                 .navigationDestination(for: NavigationRoute.self) { route in
-                    navigationManager.router.destination(for: route)
+                    router.destination(for: route)
                 }
         }
+        .environment(\.navigate, NavigationAction(action: { route in
+            router.path.append(route)
+        }))
+        
     }
 }

@@ -8,11 +8,9 @@
 import SwiftUI
 
 struct Sort: View {
-    @Environment(OverlayObservable.self) var overlayObservable
-    
     @State var viewModel: ViewModel
     
-    init(cgPoint: CGPoint, callback: @escaping (OverlayObservable.Action) -> Void) {
+    init(cgPoint: CGPoint, callback: @escaping (DataService.Sort) -> Void) {
         _viewModel = State(initialValue: .init(cgPoint: cgPoint, callback: callback))
     }
     
@@ -25,7 +23,7 @@ struct Sort: View {
                 .padding(.top, 16)
 
             Button {
-                viewModel.sortTapped(.name, overlayObservable: overlayObservable)
+                viewModel.sortTapped(.name)
             } label: {
                 Text("name")
                     .font(.custom("Manjari-Regular", size: 18))
@@ -42,7 +40,7 @@ struct Sort: View {
                 .frame(height: 1)
             
             Button {
-                viewModel.sortTapped(.time, overlayObservable: overlayObservable)
+                viewModel.sortTapped(.time)
             } label: {
                 Text("time")
                     .font(.custom("Manjari-Regular", size: 18))
@@ -59,7 +57,7 @@ struct Sort: View {
                 .frame(height: 1)
             
             Button {
-                viewModel.sortTapped(.tags, overlayObservable: overlayObservable)
+                viewModel.sortTapped(.tags)
             } label: {
                 Text("tags")
                     .font(.custom("Manjari-Regular", size: 18))

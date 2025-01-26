@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct Detail: View {
-    @Environment(OverlayObservable.self) var overlayObservable
-    
     @State var viewModel = ViewModel(dataService: .shared)
     
     var body: some View {
@@ -88,7 +86,6 @@ struct Detail: View {
                     
                     Button {
                         viewModel.startTimer()
-                        overlayObservable.close()
                     } label: {
                         HStack(alignment: .center, spacing: 0){
                             Text("Start")
@@ -120,8 +117,5 @@ struct Detail: View {
 }
 
 #Preview {
-    let overlayObservable = OverlayObservable()
-    
     Detail()
-        .environment(overlayObservable)
 }

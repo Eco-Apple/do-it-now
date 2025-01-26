@@ -7,20 +7,16 @@
 
 import SwiftUI
 
-struct Overlay<Content: View>: View {
-    @Environment(OverlayObservable.self) var overlayObservable
+struct CustomAlertModifier<AlertContent: View>: ViewModifier {
+    @Binding var isPresented: Bool
     
-    var content: Content
+    let alertContent: () -> AlertContent
     
-    init(@ViewBuilder content: () -> Content) {
-        self.content = content()
-    }
-    
-    var body: some View {
-        ZStack {
-            content
-            
-            if overlayObservable.isPresented {
+    func body(content: Content) -> some View {
+        if isPresented {
+            ZStack {
+                content
+                
                 Color
                     .overlay
                     .ignoresSafeArea()
@@ -29,7 +25,7 @@ struct Overlay<Content: View>: View {
                     HStack {
                         Spacer()
                         Button {
-                            overlayObservable.close()
+                            isPresented = false
                         } label: {
                             Image("x")
                                 .padding(4.9)
@@ -48,24 +44,16 @@ struct Overlay<Content: View>: View {
                     Spacer()
                 }
                 
-                switch overlayObservable.type {
-                case .add:
-                    Add(callback: overlayObservable.callback)
-                case .detail:
-                    Detail()
-                case .filter(let cgPoint):
-                    Sort(cgPoint: cgPoint, callback: overlayObservable.callback)
-                case .alert(let view):
-                    AlertView(view: view)
-                case .none:
-                    EmptyView()
-                }
+                alertContent()
             }
+        } else {
+            content
         }
     }
 }
 
-#Preview {
-    Overlay {
+extension View {
+    func customAlert<Content: View>(isPresented: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) -> some View {
+        return modifier(CustomAlertModifier(isPresented: isPresented, alertContent: content))
     }
 }

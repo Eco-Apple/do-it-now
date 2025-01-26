@@ -19,12 +19,8 @@ struct Main: View {
                 Splash()
                     .ignoresSafeArea()
             } else {
-                Environments {
-                    Overlay {
-                        Navigation {
-                            Tasks()
-                        }
-                    }
+                Navigation {
+                    Tasks()
                 }
             }
         }
