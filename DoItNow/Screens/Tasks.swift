@@ -23,7 +23,7 @@ struct Tasks: View {
     
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: 0) {
+            VStack(spacing: 0) {
                 HStack {
                     Text("Recents")
                         .foregroundStyle(.recents)
@@ -52,11 +52,15 @@ struct Tasks: View {
                 .padding(.leading, 19)
                 .padding(.trailing, 21)
                 
-                VStack {
+                VStack(spacing: 0) {
                     ForEach(viewModel.tasks) { task in
                         Button {
+                            viewModel.isDetailPresented = true
+                            viewModel.taskSelected = task
                         } label : {
                             TasksItem(task: task)
+                                .padding(.bottom, 12)
+                                .contentShape(Rectangle())
                         }
                         .buttonStyle(PlainButtonStyle())
                     }
@@ -77,15 +81,13 @@ struct Tasks: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
+        .customToolbar {
+            HStack {
                 Image("toolbar-logo")
-                    .padding(.leading, 5.73)
-            }
-            ToolbarItem(placement: .topBarTrailing) {
+                Spacer()
                 Button {
                     viewModel.isAddPresented = true
-                } label : {
+                } label: {
                     Image("plus")
                         .padding(4.9)
                         .background {
@@ -97,7 +99,24 @@ struct Tasks: View {
                                 }
                         }
                 }
-                .padding(.trailing, 5)
+            }
+            .padding(.leading, 23.73)
+            .padding(.trailing, 24)
+            .padding(.bottom, 15)
+        }
+        .customAlert(isPresented: $viewModel.isDetailPresented) {
+            if let taskSelected = viewModel.taskSelected {
+                Detail(task: taskSelected, isDetailPresented: $viewModel.isDetailPresented) { response in
+                    switch response {
+                    case .success(_):
+                        viewModel.tasks.removeAll { task in
+                            task.id == taskSelected.id
+                        }
+                    case .failure(let message):
+                        fatalError(message)
+                    }
+                    
+                }
             }
         }
         .customAlert(isPresented: $viewModel.isAddPresented) {

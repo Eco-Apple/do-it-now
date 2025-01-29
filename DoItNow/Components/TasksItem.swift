@@ -12,7 +12,7 @@ struct TasksItem: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            Image("uncheck")
+            Image(task.timeElapsed != 0 ? "check" : "uncheck")
                 .alignmentGuide(.top) { d in
                     3
                 }
@@ -20,7 +20,7 @@ struct TasksItem: View {
                 Text(task.title)
                     .frame(height: 21)
                     .font(.custom("Manjari-Bold", size: 18))
-                Text(task.timeStarted == nil ? "Not started" : "40 mins")
+                Text(task.timeElapsedFormatted)
                     .frame(height: 16)
                     .foregroundStyle(.fontSecondary)
                     .font(.custom("Manjari-Bold", size: 14))

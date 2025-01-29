@@ -29,7 +29,8 @@ struct CustomAlert<Title: View, Message: View, Actions: View>: View {
             actions()
                 .padding(.top, 43)
         }
-        .padding(26)
+        .padding(.top, 26)
+        .padding(.bottom, 20)
         .frame(width: 362)
         .frame(minHeight: 163, alignment: .top)
         .background(.white)

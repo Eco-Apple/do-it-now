@@ -26,6 +26,12 @@ extension Add {
             self.callback = callback
         }
         
+        func isStartEnable() -> Bool {
+            guard !title.isEmpty && !description.isEmpty && !tags.isEmpty else { return false }
+            
+            return true
+        }
+        
         func startTimer() {
             let task = Task(
                 title: title,

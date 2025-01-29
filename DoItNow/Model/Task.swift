@@ -13,15 +13,24 @@ class Task: Identifiable {
     var title: String
     var desc: String
     var tags: String
-    var timeStarted: Date?
+    var timeElapsed: Double
     
     var createdDate: Date
     var updatedDate: Date
+    
+    var timeElapsedFormatted: String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.minute, .hour, .day, .second]
+        formatter.unitsStyle = .full
+        
+        return formatter.string(from: timeElapsed) ?? "Just now"
+    }
     
     init(title: String, desc: String, tags: String) {
         self.title = title
         self.desc = desc
         self.tags = tags
+        self.timeElapsed = 0.0
         self.createdDate = .now
         self.updatedDate = .now
     }

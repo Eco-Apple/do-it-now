@@ -59,6 +59,18 @@ class DataService {
         }
     }
     
+    func deleteTask(_ task: Task) -> Response {
+        do {
+            context.delete(task)
+            
+            try context.save()
+            
+            return .success("Task successfully deleted.")
+        } catch {
+            return .failure(error.localizedDescription)
+        }
+    }
+    
     func addTask(_ task: Task) -> Response {
         do {
             context.insert(task)

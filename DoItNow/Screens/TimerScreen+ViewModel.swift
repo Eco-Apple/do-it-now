@@ -10,19 +10,30 @@ import SwiftUI
 extension TimerScreen {
     @Observable
     class ViewModel {
-        var timeElapsed: Double = 0.0
-        let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+        private(set) var task: Task
+        private(set) var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+        private var saveTime: Date = .now
         
+        var illustration: String
         var isAlertPresented = false
         
-        private(set) var task: Task
+        var secondsSinceTheLastSaveTime: Double {
+            Date().timeIntervalSince(saveTime)
+        }
         
         init(task: Task) {
             self.task = task
+            self.illustration = String(Int.random(in: 1...8))
         }
         
-        func onAppear() {
-            timeElapsed = 0.0
+        func scene(_ scenePhase: ScenePhase) {
+            if scenePhase == .active {
+                task.timeElapsed += secondsSinceTheLastSaveTime
+                timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+            } else if scenePhase == .background {
+                timer.upstream.connect().cancel()
+                saveTime = .now
+            }
         }
         
         func done(dismiss: DismissAction) {
@@ -31,13 +42,21 @@ extension TimerScreen {
             dismiss()
         }
         
+        func pauseTimer() {
+            timer.upstream.connect().cancel()
+        }
+        
+        func resumeTimer() {
+            timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+        }
+        
         func onReceiveTimer(_ value: Date) {
-            timeElapsed += 1
+            task.timeElapsed += 1
         }
         
         func formatTime() -> String {
-            let minutes = Int(timeElapsed) / 60
-            let seconds = Int(timeElapsed) % 60
+            let minutes = Int(task.timeElapsed) / 60
+            let seconds = Int(task.timeElapsed) % 60
             return String(format: "%02d:%02d", minutes, seconds)
         }
     }

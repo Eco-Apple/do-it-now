@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TimerScreen: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.scenePhase) var scenePhase
     
     @State private var viewModel: ViewModel
     
@@ -18,9 +19,9 @@ struct TimerScreen: View {
     
     var body: some View {
         VStack(spacing: .zero) {
-            Image(.yoga)
+            Image(viewModel.illustration)
                 .frame(width: 362, height: 362)
-                .padding(.top, 164)
+                .padding(.top, 62)
             
             Text(viewModel.formatTime())
                 .frame(width: 362, height: 70, alignment: .top)
@@ -32,6 +33,7 @@ struct TimerScreen: View {
                 .frame(width: 362, height: 19, alignment: .top)
                 .font(.custom("Manjari-Bold", size: 20))
                 .padding(.top, 19)
+            
             Spacer()
             
             HStack {
@@ -39,6 +41,7 @@ struct TimerScreen: View {
                 
                 Button {
                     viewModel.isAlertPresented = true
+                    viewModel.pauseTimer()
                 } label: {
                     HStack(alignment: .top, spacing: 0){
                         Text("Done")
@@ -54,17 +57,19 @@ struct TimerScreen: View {
             }
             .frame(height: 20)
             .padding(.trailing, 16)
-            .padding(.bottom, 31)
         }
         .navigationBarBackButtonHidden()
-        .ignoresSafeArea()
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
+        .customToolbar {
+            HStack {
                 Image("toolbar-logo")
-                    .padding(.leading, 5.73)
+                Spacer()
             }
+            .padding(.leading, 23.73)
+            .padding(.trailing, 24)
         }
-        .onAppear(perform: viewModel.onAppear)
+        .onChange(of: scenePhase) {
+            viewModel.scene(scenePhase)
+        }
         .customAlert(isPresented: $viewModel.isAlertPresented) {
             CustomAlert {
                 Text("Are you sure")
@@ -73,6 +78,10 @@ struct TimerScreen: View {
                 Text("You want to finish ")
                     .font(.custom("Manjari-Regular", size: 18))
                 + Text(viewModel.task.title)
+                    .font(.custom("Manjari-Bold", size: 18))
+                + Text(" at ")
+                    .font(.custom("Manjari-Regular", size: 18))
+                + Text(viewModel.task.timeElapsedFormatted)
                     .font(.custom("Manjari-Bold", size: 18))
                 + Text("?")
                     .font(.custom("Manjari-Regular", size: 18))
@@ -89,6 +98,7 @@ struct TimerScreen: View {
                     
                     Button {
                         viewModel.isAlertPresented = false
+                        viewModel.resumeTimer()
                     } label: {
                         Text("No")
                             .frame(maxWidth: .infinity)

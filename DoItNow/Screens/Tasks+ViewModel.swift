@@ -21,6 +21,8 @@ extension Tasks {
         
         var isAddPresented = false
         var isSortPresented = false
+        var isDetailPresented = false
+        var taskSelected: Task? = nil
         
         init(dataService: DataService) {
             self.dataService = dataService
@@ -46,6 +48,9 @@ extension Tasks {
                 guard let task = data as? Task else { return }
                 tasks.insert(task, at: 0)
                 navigate(.add(.timer(task)))
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.isAddPresented = false
+                }
             case .failure(let message):
                 fatalError(message)
             }

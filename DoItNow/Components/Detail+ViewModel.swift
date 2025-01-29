@@ -9,47 +9,61 @@ import SwiftUI
 
 extension Detail {
     
+    enum Response {
+        case success(String)
+        case failure(String)
+    }
+    
     @Observable
     class ViewModel {
-        var title: String = ""
-        var description: String = ""
-        var tags: String = ""
         
+        var task: Task
+       
         let titleLimit: Int = 23
         let descriptionLimit: Int = 300
         let tagsLimit: Int = 36
         
+        var isAlertPresented = false
+        
         private let dataService: DataService
         
-        init(dataService: DataService){
+        private(set) var isDetailPresented: Binding<Bool>
+        private(set) var callback: (Detail.Response) -> Void
+        
+        init(dataService: DataService, task: Task, isDetailPresented: Binding<Bool>, callback: @escaping (Detail.Response) -> Void){
             self.dataService = dataService
+            self.task = task
+            self.isDetailPresented = isDetailPresented
+            self.callback = callback
         }
         
-        func startTimer() {
-            let task = Task(
-                title: title,
-                desc: description,
-                tags: tags
-            )
+        func deleteTask() {
+            let response = dataService.deleteTask(task)
             
-//            dataService.addTask(task, callback: { _ in })
+            switch response {
+            case .success(let message):
+                isDetailPresented.wrappedValue = false
+                callback(.success("Successfully deleted task"))
+            case .failure(let message):
+                fatalError(message)
+            }
         }
         
         func limitTitle<V>(oldValue: V, newValue: V) {
-            if title.count > titleLimit {
-                title = String(title.prefix(titleLimit))
+            if task.title.count > titleLimit {
+                task.title = String(task.title.prefix(titleLimit))
             }
         }
         
         func limitDescription<V>(oldValue: V, newValue: V) {
-            if description.count > descriptionLimit {
-                description = String(description.prefix(descriptionLimit))
+            if task.desc.count > descriptionLimit {
+                task.desc = String(task.desc.prefix(descriptionLimit))
             }
         }
         
         func limitTags<V>(oldValue: V, newValue: V) {
-            if tags.count > tagsLimit {
-                tags = String(tags.prefix(tagsLimit))
+            if task.tags.count > tagsLimit {
+                task.tags = String(task.tags.prefix(tagsLimit))
             }
         }
     }

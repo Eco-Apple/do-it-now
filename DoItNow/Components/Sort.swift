@@ -73,7 +73,7 @@ struct Sort: View {
         .frame(width: 133, height: 140, alignment: .leading)
         .background(.filterBackground)
         .cornerRadius(11)
-        .position(x: viewModel.cgPoint.x - 50, y: viewModel.cgPoint.y + 35)
+        .position(x: viewModel.cgPoint.x - 50, y: viewModel.cgPoint.y)
     }
 }
 

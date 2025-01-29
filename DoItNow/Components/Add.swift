@@ -84,19 +84,21 @@ struct Add: View {
                 
                 HStack {
                     Spacer()
-                    
-                    Button {
-                        viewModel.startTimer()
-                    } label: {
-                        HStack(alignment: .center, spacing: 0){
-                            Text("Start")
-                                .font(.custom("Manjari-Bold", size: 16))
-                                .padding(.top, 5)
-                            
-                            Image("chevron-right")
+                
+                    if viewModel.isStartEnable() {
+                        Button {
+                            viewModel.startTimer()
+                        } label: {
+                            HStack(alignment: .center, spacing: 0){
+                                Text("Start")
+                                    .font(.custom("Manjari-Bold", size: 16))
+                                    .padding(.top, 5)
+                                
+                                Image(.chevronRight)
+                            }
                         }
+                        .buttonStyle(PlainButtonStyle())
                     }
-                    .buttonStyle(PlainButtonStyle())
                 }
                 .frame(height: 20)
                 .padding(.trailing, 16)

@@ -13,15 +13,17 @@ struct CustomAlertModifier<AlertContent: View>: ViewModifier {
     let alertContent: () -> AlertContent
     
     func body(content: Content) -> some View {
-        if isPresented {
-            ZStack {
-                content
-                
+        ZStack {
+            content
+            if isPresented {
                 Color
                     .overlay
                     .ignoresSafeArea()
                 
                 VStack {
+                    Spacer()
+                }
+                .customToolbar {
                     HStack {
                         Spacer()
                         Button {
@@ -39,15 +41,12 @@ struct CustomAlertModifier<AlertContent: View>: ViewModifier {
                                 }
                         }
                     }
-                    .padding(.horizontal, 24)
+                    .padding(.leading, 23.73)
+                    .padding(.trailing, 24)
                     
-                    Spacer()
                 }
-                
                 alertContent()
             }
-        } else {
-            content
         }
     }
 }
