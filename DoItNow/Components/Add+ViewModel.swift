@@ -19,6 +19,7 @@ extension Add {
         let tagsLimit: Int = 36
         
         var isTimerScreenActive = false
+        var isBottomSheetShow = false
         
         private(set) var callback: (Task) -> Void
         

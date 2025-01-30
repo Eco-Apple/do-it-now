@@ -31,11 +31,12 @@ struct CustomAlert<Title: View, Message: View, Actions: View>: View {
         }
         .padding(.top, 26)
         .padding(.bottom, 20)
-        .frame(width: 362)
+        .padding(.horizontal, 15)
         .frame(minHeight: 163, alignment: .top)
-        .background(.white)
+        .background(Color("Background"))
         .cornerRadius(28)
         .shadow(color: .black.opacity(0.25), radius: 4, x: 2, y: 1)
+        .padding(.horizontal, 20)
     }
 }
 

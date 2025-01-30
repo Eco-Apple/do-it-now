@@ -10,6 +10,7 @@ import SwiftUI
 struct TimerScreen: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.scenePhase) var scenePhase
+    @Environment(\.navigate) var navigate
     
     @State private var viewModel: ViewModel
     
@@ -59,13 +60,17 @@ struct TimerScreen: View {
             .padding(.trailing, 16)
         }
         .navigationBarBackButtonHidden()
+        .background(Color("Background"))
         .customToolbar {
             HStack {
-                Image("toolbar-logo")
+                Image("logo")
+                    .resizable()
+                    .frame(width: 36.27, height: 39)
                 Spacer()
             }
             .padding(.leading, 23.73)
             .padding(.trailing, 24)
+            .background(Color("Background"))
         }
         .onChange(of: scenePhase) {
             viewModel.scene(scenePhase)
@@ -88,7 +93,7 @@ struct TimerScreen: View {
             } actions : {
                 HStack(alignment: .center, spacing: .zero){
                     Button {
-                        viewModel.done(dismiss: dismiss)
+                        viewModel.done(navigate: navigate, dismiss: dismiss)
                     } label: {
                         Text("Yes")
                             .frame(maxWidth: .infinity)

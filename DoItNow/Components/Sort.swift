@@ -73,7 +73,15 @@ struct Sort: View {
         .frame(width: 133, height: 140, alignment: .leading)
         .background(.filterBackground)
         .cornerRadius(11)
-        .position(x: viewModel.cgPoint.x - 50, y: viewModel.cgPoint.y)
+        .position(x: viewModel.cgPoint.x - 50, y: viewModel.isAnimated ? viewModel.cgPoint.y + 45 : viewModel.cgPoint.y + 45 - 10)
+        .opacity(viewModel.isAnimated ? 1 : 0)
+        .onAppear {
+            viewModel.isAnimated = false
+            
+            withAnimation(.easeInOut(duration: 0.5)) {
+                viewModel.isAnimated = true
+            }
+        }
     }
 }
 

@@ -24,6 +24,7 @@ extension Detail {
         let tagsLimit: Int = 36
         
         var isAlertPresented = false
+        var isBottomSheetShow = false
         
         private let dataService: DataService
         

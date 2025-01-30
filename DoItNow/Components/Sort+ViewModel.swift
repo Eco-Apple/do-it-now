@@ -13,6 +13,8 @@ extension Sort {
         private(set) var cgPoint: CGPoint
         private(set) var callback: (DataService.Sort) -> Void
         
+        var isAnimated = false
+        
         init(cgPoint: CGPoint, callback: @escaping (DataService.Sort) -> Void) {
             self.cgPoint = cgPoint
             self.callback = callback

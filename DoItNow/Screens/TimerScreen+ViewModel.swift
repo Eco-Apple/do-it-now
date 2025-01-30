@@ -36,10 +36,10 @@ extension TimerScreen {
             }
         }
         
-        func done(dismiss: DismissAction) {
+        func done(navigate: NavigationAction, dismiss: DismissAction) {
             isAlertPresented = false
             timer.upstream.connect().cancel()
-            dismiss()
+            navigate(.add(.congratulations), isReplace: true)
         }
         
         func pauseTimer() {

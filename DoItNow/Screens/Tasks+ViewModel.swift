@@ -24,6 +24,13 @@ extension Tasks {
         var isDetailPresented = false
         var taskSelected: Task? = nil
         
+        var isLogoShow = false
+        var isAddButtonShow = false
+        var isRecentShow = false
+        var isSortButtonShow = false
+        var isAddBSOverlayShow = false
+        var isNoTaskShow = false
+        
         init(dataService: DataService) {
             self.dataService = dataService
             

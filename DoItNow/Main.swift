@@ -15,20 +15,17 @@ struct Main: View {
             Color("Background")
                 .ignoresSafeArea()
             
+            Navigation {
+                Tasks()
+            }
+            
             if isSplashActive {
                 Splash()
-                    .ignoresSafeArea()
-            } else {
-                Navigation {
-                    Tasks()
-                }
             }
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                withAnimation {
-                    isSplashActive = false
-                }
+                isSplashActive = false
             }
         }
     }

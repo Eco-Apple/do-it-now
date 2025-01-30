@@ -16,7 +16,7 @@ struct Detail: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: .zero) {
             Spacer()
             
             VStack(alignment: .leading, spacing: 0) {
@@ -43,7 +43,7 @@ struct Detail: View {
                 
                 TextEditor(text: $viewModel.task.desc)
                     .placeHolder("Make sure that it is long and slow, don’t make it fast because it will only worsen my prgress, slow but surely", text: $viewModel.task.desc)
-                    .frame(height: 160.0)
+                    .frame(height: 100.0)
                     .padding(.leading, 23)
                     .padding(.trailing, 18)
                     .padding(.top, 11)
@@ -108,19 +108,22 @@ struct Detail: View {
                 .padding(.trailing, 16)
                 .padding(.leading, 19)
                 .padding(.top, 26)
-                
-                Spacer()
-                
             }
             .padding(.top, 57.0)
             .padding(.bottom, 31.0)
-            .frame(height: 407)
             .frame(maxWidth: .infinity)
-            .background(.white)
+            .background(Color("Background"))
             .clipShape(.rect(topLeadingRadius: 37, topTrailingRadius: 37))
             .shadow(color: .black.opacity(0.25), radius: 23.6, x: -4, y: 1)
+            .offset(y: viewModel.isBottomSheetShow ? 0 : 500)
+            .onAppear {
+                viewModel.isBottomSheetShow = false
+                withAnimation(.easeInOut(duration: 0.5)){
+                    viewModel.isBottomSheetShow = true
+                }
+            }
         }
-        .ignoresSafeArea(edges: .bottom)
+        .ignoresSafeArea(.container, edges: .bottom)
         .customAlert(isPresented: $viewModel.isAlertPresented) {
             CustomAlert {
                 Text("Are you sure")

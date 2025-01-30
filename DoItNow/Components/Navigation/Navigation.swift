@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct NavigationAction {
-    typealias Action = (NavigationRoute) -> ()
+    typealias Action = (NavigationRoute, Bool) -> ()
     let action: Action
-    func callAsFunction(_ route: NavigationRoute) {
-        action(route)
+    func callAsFunction(_ route: NavigationRoute, isReplace: Bool = false) {
+        action(route, isReplace)
     }
 }
 
 struct NavigationEnvironmentKey: EnvironmentKey {
-    static var defaultValue: NavigationAction = NavigationAction(action: { _ in })
+    static var defaultValue: NavigationAction = NavigationAction(action: { _,_ in })
 }
 
 extension EnvironmentValues {
@@ -42,8 +42,13 @@ struct Navigation<Content: View>: View {
                     router.destination(for: route)
                 }
         }
-        .environment(\.navigate, NavigationAction(action: { route in
-            router.path.append(route)
+        .environment(\.navigate, NavigationAction(action: { route, isReplace in
+            if !isReplace {
+                router.path.append(route)
+            } else {
+                router.path.removeLast()
+                router.path.append(route)
+            }
         }))
         
     }
