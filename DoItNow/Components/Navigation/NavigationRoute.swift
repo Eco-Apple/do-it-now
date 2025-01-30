@@ -12,6 +12,6 @@ enum NavigationRoute: Hashable {
     
     enum AddRoute: Hashable {
         case timer(Task)
-        case congratulations
+        case congratulations(Task)
     }
 }

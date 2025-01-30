@@ -24,8 +24,8 @@ class NavigationRouter {
         switch route {
         case .timer(let task):
             TimerScreen(task: task)
-        case .congratulations:
-            Congratulations()
+        case .congratulations(let task):
+            Congratulations(task: task)
         }
     }
 }

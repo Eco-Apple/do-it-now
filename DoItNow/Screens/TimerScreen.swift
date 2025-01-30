@@ -26,7 +26,7 @@ struct TimerScreen: View {
             
             Text(viewModel.formatTime())
                 .frame(width: 362, height: 70, alignment: .top)
-                .font(.custom("Manjari-Bold", size: 95))
+                .font(.custom("Manjari-Bold", size: viewModel.isHourPassed ? 80 : 95))
                 .padding(.top, -2)
                 .onReceive(viewModel.timer, perform: viewModel.onReceiveTimer)
             

@@ -13,6 +13,8 @@ struct Congratulations: View {
     
     @State var triggerConfetti = false
     
+    let task: Task
+    
     var body: some View {
         ZStack {
            
@@ -20,8 +22,6 @@ struct Congratulations: View {
                 Image(.congrats)
                     .frame(width: 358, height: 358)
                     
-                
-                
                 VStack(spacing: .zero) {
                     Text("Yeheey  🎉🎉🎉")
                         .font(.custom("Manjari-Bold", size: 25))
@@ -30,11 +30,11 @@ struct Congratulations: View {
                     VStack(spacing: 0){
                         Text("Congratulations for finishing ")
                             .font(.custom("Manjari-Regular", size: 18))
-                        + Text("Run after work")
+                        + Text(task.title)
                             .font(.custom("Manjari-Bold", size: 18))
                         + Text(" at ")
                             .font(.custom("Manjari-Regular", size: 18))
-                        + Text("40 minutes")
+                        + Text(task.timeElapsedFormatted)
                             .font(.custom("Manjari-Bold", size: 18))
                     }
                     .padding(.top, 6)
@@ -82,5 +82,5 @@ struct Congratulations: View {
 }
 
 #Preview {
-    Congratulations()
+    Congratulations(task: .example)
 }

@@ -21,6 +21,14 @@ extension TimerScreen {
             Date().timeIntervalSince(saveTime)
         }
         
+        var isHourPassed: Bool {
+            if task.timeElapsed >= 3600 {
+                return true
+            }
+            
+            return false
+        }
+        
         init(task: Task) {
             self.task = task
             self.illustration = String(Int.random(in: 1...8))
@@ -39,7 +47,7 @@ extension TimerScreen {
         func done(navigate: NavigationAction, dismiss: DismissAction) {
             isAlertPresented = false
             timer.upstream.connect().cancel()
-            navigate(.add(.congratulations), isReplace: true)
+            navigate(.add(.congratulations(task)), isReplace: true)
         }
         
         func pauseTimer() {
@@ -55,9 +63,16 @@ extension TimerScreen {
         }
         
         func formatTime() -> String {
-            let minutes = Int(task.timeElapsed) / 60
-            let seconds = Int(task.timeElapsed) % 60
-            return String(format: "%02d:%02d", minutes, seconds)
+            if !isHourPassed {
+                let minutes = Int(task.timeElapsed) / 60
+                let seconds = Int(task.timeElapsed) % 60
+                return String(format: "%02d:%02d", minutes, seconds)
+            } else {
+                let hours = Int(task.timeElapsed) / 3600
+                let minutes = (Int(task.timeElapsed) % 3600) / 60
+                let seconds = Int(task.timeElapsed) % 60
+                return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+            }
         }
     }
 }
