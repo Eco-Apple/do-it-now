@@ -12,13 +12,13 @@ extension TimerScreen {
     class ViewModel {
         private(set) var task: Task
         private(set) var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-        private var saveTime: Date = .now
+        private var saveTime: Date? = nil
         
         var illustration: String
         var isAlertPresented = false
         
         var secondsSinceTheLastSaveTime: Double {
-            Date().timeIntervalSince(saveTime)
+            Date().timeIntervalSince(saveTime ?? .now)
         }
         
         var isHourPassed: Bool {
@@ -35,9 +35,10 @@ extension TimerScreen {
         }
         
         func scene(_ scenePhase: ScenePhase) {
-            if scenePhase == .active {
+            if scenePhase == .active && saveTime != nil {
                 task.timeElapsed += secondsSinceTheLastSaveTime
                 timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+                saveTime = nil
             } else if scenePhase == .background {
                 timer.upstream.connect().cancel()
                 saveTime = .now

@@ -13,6 +13,11 @@ struct Splash: View {
     
     var body: some View {
         ZStack {
+            Color
+                .clear
+                .contentShape(Rectangle())
+                .allowsHitTesting(true)
+            
             VStack(alignment: .leading, spacing: .zero) {
                 VStack(alignment: .leading, spacing: .zero){
                     HStack(spacing: .zero) {
@@ -40,7 +45,7 @@ struct Splash: View {
                 isShowing = true
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                withAnimation(.easeInOut(duration: 1.5)) {
+                withAnimation(.linear(duration: 1.5)) {
                     isMoving = true
                 }
             }

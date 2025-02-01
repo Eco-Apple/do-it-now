@@ -42,7 +42,7 @@ struct Detail: View {
                     .padding(.top, 4)
                 
                 TextEditor(text: $viewModel.task.desc)
-                    .placeHolder("Make sure that it is long and slow, don’t make it fast because it will only worsen my prgress, slow but surely", text: $viewModel.task.desc)
+                    .placeHolder("Make sure that it is long and slow; do not make it fast, as that will only hinder my progress. It should be slow but steady.", text: $viewModel.task.desc)
                     .frame(height: 100.0)
                     .padding(.leading, 23)
                     .padding(.trailing, 18)

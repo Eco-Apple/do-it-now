@@ -169,7 +169,7 @@ struct Tasks: View {
             Sort(cgPoint: viewModel.sortButtonPosition, callback: viewModel.sortCallback)
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.4) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                 viewModel.isLogoShow = true
             }
             
