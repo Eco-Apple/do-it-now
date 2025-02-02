@@ -169,23 +169,23 @@ struct Tasks: View {
             Sort(cgPoint: viewModel.sortButtonPosition, callback: viewModel.sortCallback)
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                 viewModel.isLogoShow = true
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                 viewModel.isAddButtonShow = true
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
                 viewModel.isRecentShow = true
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
                 viewModel.isNoTaskShow = true
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
                 viewModel.isSortButtonShow = true
             }
         }

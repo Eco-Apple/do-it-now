@@ -11,20 +11,23 @@ struct TasksItem: View {
     @State var isCheckShow = false
     @State var isTitleShow = false
     @State var isTimeShow = false
+    @State var isCheck = false
     
     let task: Task
     let index: Int
     
     var body: some View {
         HStack(alignment: .top) {
-            Image(task.timeElapsed != 0 ? "check" : "uncheck")
+            Image(isCheck ? "check" : "uncheck")
                 .alignmentGuide(.top) { d in
                     3
                 }
                 .opacity(isCheckShow ? 1 : 0)
                 .offset(y: isCheckShow ? 0 : 5)
                 .animation(.easeInOut(duration: 1).delay(Double(index) * 0.1), value: isCheckShow)
-
+                .animation(.easeInOut(duration: 1).delay(Double(index) * 0.2), value: isCheck)
+            
+            
             VStack(alignment: .leading, spacing: 0) {
                 Text(task.title)
                     .frame(height: 21)
@@ -50,6 +53,9 @@ struct TasksItem: View {
                 isCheckShow = true
                 isTitleShow = true
                 isTimeShow = true
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.5) {
+                isCheck = true
             }
         }
     }

@@ -45,7 +45,7 @@ struct Splash: View {
                 isShowing = true
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                withAnimation(.linear(duration: 1.5)) {
+                withAnimation(.easeInOut(duration: 1.5)) {
                     isMoving = true
                 }
             }
