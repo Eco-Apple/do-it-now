@@ -15,9 +15,11 @@ struct Congratulations: View {
     
     let task: Task
     
+    @AppStorage("addCount") var addCount = 0
+    @Environment(\.requestReview) var requestReview
+    
     var body: some View {
         ZStack {
-           
             VStack(spacing: .zero) {
                 Image(.congrats)
                     .frame(width: 358, height: 358)
@@ -76,6 +78,13 @@ struct Congratulations: View {
                 .padding(.leading, 23.73)
                 .padding(.trailing, 24)
                 .background(Color("Background"))
+            }
+        }
+        .onAppear {
+            addCount += 1
+            
+            if addCount >= 2 {
+                requestReview()
             }
         }
     }

@@ -8,9 +8,12 @@
 import SwiftUI
 
 extension Detail {
-    
+    enum Mode {
+        case delete
+        case start
+    }
     enum Response {
-        case success(String)
+        case success(String, Mode)
         case failure(String)
     }
     
@@ -18,7 +21,7 @@ extension Detail {
     class ViewModel {
         
         var task: Task
-       
+        
         let titleLimit: Int = 23
         let descriptionLimit: Int = 300
         let tagsLimit: Int = 36
@@ -38,13 +41,17 @@ extension Detail {
             self.callback = callback
         }
         
+        func startTimer() {
+            callback(.success("Successfully start task", .start))
+        }
+        
         func deleteTask() {
             let response = dataService.deleteTask(task)
             
             switch response {
             case .success(let message):
                 isDetailPresented.wrappedValue = false
-                callback(.success("Successfully deleted task"))
+                callback(.success("Successfully deleted task", .delete))
             case .failure(let message):
                 fatalError(message)
             }

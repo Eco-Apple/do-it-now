@@ -19,6 +19,7 @@ class Task: Identifiable {
     var updatedDate: Date
     
     var timeElapsedFormatted: String {
+        guard timeElapsed > 0 else { return "Do it now!" }
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.minute, .hour, .day, .second]
         formatter.unitsStyle = .full

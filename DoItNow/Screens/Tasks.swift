@@ -59,29 +59,31 @@ struct Tasks: View {
                     .padding(.leading, 19)
                     .padding(.trailing, 21)
                     
-                    VStack(spacing: 0) {
-                        ForEach(Array(viewModel.tasks.enumerated()), id: \.element.id) { index, task in
-                            Button {
-                                viewModel.isDetailPresented = true
-                                viewModel.taskSelected = task
-                            } label : {
-                                TasksItem(task: task, index: index)
-                                    .padding(.bottom, 12)
-                                    .contentShape(Rectangle())
+                    if viewModel.isTasksShow {
+                        VStack(spacing: 0) {
+                            ForEach(Array(viewModel.tasks.enumerated()), id: \.element.id) { index, task in
+                                Button {
+                                    viewModel.isDetailPresented = true
+                                    viewModel.taskSelected = task
+                                } label : {
+                                    TasksItem(task: task, index: index)
+                                        .padding(.bottom, 12)
+                                        .contentShape(Rectangle())
+                                }
+                                .buttonStyle(PlainButtonStyle())
                             }
-                            .buttonStyle(PlainButtonStyle())
                         }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.leading, 19)
-                    .padding(.trailing, 21)
-                    .onChange(of: viewModel.isDetailPresented) {
-                        if viewModel.isDetailPresented {
-                            withAnimation(.easeInOut(duration: 0.5)){
-                                viewModel.isAddBSOverlayShow = true
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 19)
+                        .padding(.trailing, 21)
+                        .onChange(of: viewModel.isDetailPresented) {
+                            if viewModel.isDetailPresented {
+                                withAnimation(.easeInOut(duration: 0.5)){
+                                    viewModel.isAddBSOverlayShow = true
+                                }
+                            } else if !viewModel.isAddPresented {
+                                viewModel.isAddBSOverlayShow = false
                             }
-                        } else if !viewModel.isAddPresented {
-                            viewModel.isAddBSOverlayShow = false
                         }
                     }
                     
@@ -108,7 +110,6 @@ struct Tasks: View {
                 Image("logo")
                     .resizable()
                     .frame(width: 36.27, height: 39)
-                    .opacity(viewModel.isLogoShow ? 1 : 0)
                 
                 Spacer()
                 
@@ -149,9 +150,17 @@ struct Tasks: View {
             if let taskSelected = viewModel.taskSelected {
                 Detail(task: taskSelected, isDetailPresented: $viewModel.isDetailPresented) { response in
                     switch response {
-                    case .success(_):
-                        viewModel.tasks.removeAll { task in
-                            task.id == taskSelected.id
+                    case .success(let message, let mode):
+                        if mode == .delete {
+                            viewModel.tasks.removeAll { task in
+                                task.id == taskSelected.id
+                            }
+                        } else if mode == .start {
+                            navigate(.add(.timer(taskSelected)))
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                viewModel.isDetailPresented = false
+                                viewModel.taskSelected = nil
+                            }
                         }
                     case .failure(let message):
                         fatalError(message)
@@ -161,32 +170,32 @@ struct Tasks: View {
             }
         }
         .customAlert(isPresented: $viewModel.isAddPresented, isOverlayShow: $viewModel.isAddBSOverlayShow) {
-            Add { task in
-                viewModel.addCallback(task: task, navigate: navigate)
+            Add { task, mode in
+                viewModel.addCallback(task: task, mode: mode, navigate: navigate)
             }
         }
         .customAlert(isPresented: $viewModel.isSortPresented) {
             Sort(cgPoint: viewModel.sortButtonPosition, callback: viewModel.sortCallback)
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                viewModel.isLogoShow = true
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
                 viewModel.isAddButtonShow = true
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 viewModel.isRecentShow = true
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 viewModel.isNoTaskShow = true
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 viewModel.isSortButtonShow = true
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                viewModel.isTasksShow = true
             }
         }
     }

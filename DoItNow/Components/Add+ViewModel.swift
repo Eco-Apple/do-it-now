@@ -8,6 +8,12 @@
 import SwiftUI
 
 extension Add {
+    
+    enum Mode {
+        case doItNow
+        case doItLater
+    }
+    
     @Observable
     class ViewModel {
         var title: String = ""
@@ -21,9 +27,13 @@ extension Add {
         var isTimerScreenActive = false
         var isBottomSheetShow = false
         
-        private(set) var callback: (Task) -> Void
+        var isCanProceed: Bool {
+            !title.isEmpty && !description.isEmpty && !tags.isEmpty
+        }
         
-        init(callback: @escaping (Task) -> Void){
+        private(set) var callback: (Task, Mode) -> Void
+        
+        init(callback: @escaping (Task, Mode) -> Void){
             self.callback = callback
         }
         
@@ -33,6 +43,16 @@ extension Add {
             return true
         }
         
+        func doItLater() {
+            let task = Task(
+                title: title,
+                desc: description,
+                tags: tags
+            )
+            
+            callback(task, .doItLater)
+        }
+        
         func startTimer() {
             let task = Task(
                 title: title,
@@ -40,7 +60,7 @@ extension Add {
                 tags: tags
             )
             
-            callback(task)
+            callback(task, .doItNow)
         }
         
         func limitTitle<V>(oldValue: V, newValue: V) {

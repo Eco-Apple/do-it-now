@@ -16,6 +16,8 @@ struct TasksItem: View {
     let task: Task
     let index: Int
     
+    var onSplashDelay = 0.0
+    
     var body: some View {
         HStack(alignment: .top) {
             Image(isCheck ? "check" : "uncheck")
@@ -35,6 +37,7 @@ struct TasksItem: View {
                     .opacity(isTitleShow ? 1 : 0)
                     .offset(x: isTitleShow ? 0 : -5)
                     .animation(.easeInOut(duration: 1).delay(Double(index) * 0.1), value: isTitleShow)
+                
                 Text(task.timeElapsedFormatted)
                     .frame(height: 16)
                     .foregroundStyle(.fontSecondary)
@@ -49,13 +52,15 @@ struct TasksItem: View {
         .frame(height: 36)
         .frame(maxWidth: .infinity)
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
                 isCheckShow = true
                 isTitleShow = true
                 isTimeShow = true
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5.5) {
-                isCheck = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if task.timeElapsed != 0 {
+                    isCheck = true
+                }
             }
         }
     }

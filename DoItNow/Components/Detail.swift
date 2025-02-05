@@ -70,7 +70,7 @@ struct Detail: View {
                 }
                 
                 Tags(text: $viewModel.task.tags, tagsLimit: viewModel.tagsLimit)
-
+                
                 HStack {
                     Spacer()
                     
@@ -83,18 +83,20 @@ struct Detail: View {
                 .padding(.top, 11)
                 
                 HStack {
-                    HStack(alignment: .top, spacing: 0) {
-                        Image(.ok)
-                            .padding(.trailing, 4)
+                    if viewModel.task.timeElapsed > 0 {
+                        HStack(alignment: .top, spacing: 0) {
+                            Image(.ok)
+                                .padding(.trailing, 4)
+                            
+                            Text(viewModel.task.timeElapsedFormatted)
+                                .frame(height: 19)
+                                .font(.custom("Manjari-Bold", size: 16))
+                                .padding(.top, 1)
+                        }
+                        .frame(height: 20, alignment: .top)
                         
-                        Text(viewModel.task.timeElapsedFormatted)
-                            .frame(height: 19)
-                            .font(.custom("Manjari-Bold", size: 16))
-                            .padding(.top, 1)
+                        Spacer()
                     }
-                    .frame(height: 20, alignment: .top)
-                    
-                    Spacer()
                     
                     Button {
                         viewModel.isAlertPresented = true
@@ -102,6 +104,24 @@ struct Detail: View {
                         Image(.trash)
                     }
                     .buttonStyle(PlainButtonStyle())
+                    .padding(.leading, 10)
+                    
+                    if viewModel.task.timeElapsed == 0 {
+                        Spacer()
+                        
+                        Button {
+                            viewModel.startTimer()
+                        } label: {
+                            HStack(alignment: .center, spacing: 0){
+                                Text("Start")
+                                    .font(.custom("Manjari-Bold", size: 16))
+                                    .padding(.top, 5)
+                                
+                                Image(.chevronRight)
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
                     
                 }
                 .frame(height: 20)

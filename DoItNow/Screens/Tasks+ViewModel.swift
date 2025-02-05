@@ -24,12 +24,12 @@ extension Tasks {
         var isDetailPresented = false
         var taskSelected: Task? = nil
         
-        var isLogoShow = false
         var isAddButtonShow = false
         var isRecentShow = false
         var isSortButtonShow = false
         var isAddBSOverlayShow = false
         var isNoTaskShow = false
+        var isTasksShow = false
         
         init(dataService: DataService) {
             self.dataService = dataService
@@ -47,17 +47,25 @@ extension Tasks {
             isSortPresented = true
         }
         
-        func addCallback(task: Task, navigate: NavigationAction) {
+        func addCallback(task: Task, mode: Add.Mode, navigate: NavigationAction) {
             let response = dataService.addTask(task)
             
             switch response {
             case .success(let data):
                 guard let task = data as? Task else { return }
-                tasks.insert(task, at: 0)
-                navigate(.add(.timer(task)))
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                
+                if mode == .doItNow {
+                    tasks.insert(task, at: 0)
+                    navigate(.add(.timer(task)))
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self.isAddPresented = false
+                    }
+                } else if mode == .doItLater {
+                    tasks.insert(task, at: 0)
                     self.isAddPresented = false
                 }
+                
             case .failure(let message):
                 fatalError(message)
             }

@@ -15,12 +15,12 @@ struct Main: View {
             Color("Background")
                 .ignoresSafeArea()
             
-            Navigation {
-                Tasks()
-            }
-            
             if isSplashActive {
                 Splash()
+            } else {
+                Navigation {
+                    Tasks()
+                }
             }
         }
         .onAppear {

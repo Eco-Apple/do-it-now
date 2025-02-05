@@ -12,7 +12,7 @@ struct Add: View {
     
     @State var viewModel: ViewModel
     
-    init(callback: @escaping (Task) -> Void) {
+    init(callback: @escaping (Task, Mode) -> Void) {
         _viewModel = State(initialValue: .init(callback: callback))
     }
     
@@ -83,9 +83,25 @@ struct Add: View {
                 .padding(.top, 11)
                 
                 HStack {
-                    Spacer()
                     
-                    if viewModel.isStartEnable() {
+                    if true {
+                        
+                        Button {
+                            viewModel.doItLater()
+                        } label: {
+                            HStack(alignment: .center, spacing: 0){
+                                Image(.chevronLeft)
+                                
+                                Text("Do it later")
+                                    .font(.custom("Manjari-Bold", size: 16))
+                                    .padding(.top, 5)
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .disabled(!viewModel.isCanProceed)
+                        
+                        Spacer()
+                        
                         Button {
                             viewModel.startTimer()
                         } label: {
@@ -98,10 +114,12 @@ struct Add: View {
                             }
                         }
                         .buttonStyle(PlainButtonStyle())
+                        .disabled(!viewModel.isCanProceed)
                     }
                 }
                 .frame(height: 20)
                 .padding(.trailing, 16)
+                .padding(.leading, 19)
                 .padding(.top, 26)
             }
             .padding(.top, 57.0)
@@ -123,7 +141,7 @@ struct Add: View {
 }
 
 #Preview {
-    Add { _ in
+    Add { _, _ in
         
     }
 }
