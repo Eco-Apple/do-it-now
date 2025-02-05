@@ -83,7 +83,7 @@ struct Congratulations: View {
         .onAppear {
             addCount += 1
             
-            if addCount >= 2 {
+            if addCount >= 10 {
                 requestReview()
             }
         }
