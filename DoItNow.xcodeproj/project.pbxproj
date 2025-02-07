@@ -7,13 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		20D47A9C2D4AE4210015609A /* Congratulations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D47A9B2D4AE4210015609A /* Congratulations.swift */; };
 		20D47A9F2D4AEE750015609A /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 20D47A9E2D4AEE750015609A /* ConfettiSwiftUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2053CB832D21750200AE579D /* DoItNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoItNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		20D47A9B2D4AE4210015609A /* Congratulations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Congratulations.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -52,7 +50,6 @@
 		2053CB7A2D21750200AE579D = {
 			isa = PBXGroup;
 			children = (
-				20D47A9B2D4AE4210015609A /* Congratulations.swift */,
 				2053CB852D21750200AE579D /* DoItNow */,
 				2053CB842D21750200AE579D /* Products */,
 			);
@@ -144,7 +141,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20D47A9C2D4AE4210015609A /* Congratulations.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
