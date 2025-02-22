@@ -55,7 +55,8 @@ class DataService {
             
             return tasks
         } catch {
-            fatalError(error.localizedDescription)
+            debugPrint(error.localizedDescription)
+            return []
         }
     }
     

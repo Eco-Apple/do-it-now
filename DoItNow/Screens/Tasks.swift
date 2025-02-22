@@ -163,7 +163,7 @@ struct Tasks: View {
                             }
                         }
                     case .failure(let message):
-                        fatalError(message)
+                        debugPrint(message)
                     }
                     
                 }

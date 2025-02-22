@@ -53,7 +53,7 @@ extension Detail {
                 isDetailPresented.wrappedValue = false
                 callback(.success("Successfully deleted task", .delete))
             case .failure(let message):
-                fatalError(message)
+                debugPrint(message)
             }
         }
         

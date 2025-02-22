@@ -67,7 +67,7 @@ extension Tasks {
                 }
                 
             case .failure(let message):
-                fatalError(message)
+                debugPrint(message)
             }
         }
         
